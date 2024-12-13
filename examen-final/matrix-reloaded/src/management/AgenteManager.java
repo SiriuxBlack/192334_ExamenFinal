@@ -24,6 +24,40 @@ public class AgenteManager {
         System.out.println("Agente registrado con éxito.");
     }
 
+    public void asignarEquipoAAgente() {
+        
+        // Pedir el ID del agente para asignarle un equipo
+        int id = ConsoleUtils.leerEntero("Ingrese el ID del agente al que desea asignar un equipo: ");
+        ConsoleUtils.limpiarBuffer(); // Consumir cualquier salto de línea residual
+
+        // Buscar al agente en la lista por ID
+        Agente agenteEncontrado = null;
+        for (Agente agente : agentes) {
+            if (agente.getId() == id) {
+                agenteEncontrado = agente;
+                break;
+            }
+        }
+
+        // Si no se encuentra el agente
+        if (agenteEncontrado == null) {
+            System.out.println("Agente no encontrado.");
+            return;
+        }
+        
+        if (agenteEncontrado.PerteneceEquipo()) {
+            System.out.println("El agente tiene un qeuipo asignado, contacte con sus superiores para cambiarlo");
+            return;
+            
+        }
+
+        // Asignar equipo al agente encontrado
+        String equipo = ConsoleUtils.leerTexto("Ingrese el equipo para el agente " + agenteEncontrado.getNombre() + ": ");
+        agenteEncontrado.asignarEquipo(equipo);
+        System.out.println("Equipo asignado correctamente al agente " + agenteEncontrado.getNombre());
+        
+    }
+
     public void mostrarAgentes() {
         if (agentes.isEmpty()) {
             System.out.println("No hay agentes registrados.");
@@ -41,14 +75,15 @@ public class AgenteManager {
             System.out.println("\n=== Menú Agentes ===");
             System.out.println("1. Registrar Agente");
             System.out.println("2. Mostrar Agentes");
-            System.out.println("3. Salir");
+            System.out.println("3. Asignar Equipo a un Agente");
+            System.out.println("4. Salir");
             int opcion = ConsoleUtils.leerEntero("Seleccione una opción: ");
-            ConsoleUtils.limpiarBuffer(); // Consumir cualquier salto de línea residual
-
+            ConsoleUtils.limpiarBuffer(); 
             switch (opcion) {
                 case 1 -> registrarAgente();
                 case 2 -> mostrarAgentes();
-                case 3 -> continuar = false;
+                case 3 -> asignarEquipoAAgente();
+                case 4 -> continuar = false;
                 default -> System.out.println("Opción no válida.");
             }
         }
